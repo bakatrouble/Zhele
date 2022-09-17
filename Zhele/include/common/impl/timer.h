@@ -12,8 +12,8 @@
 namespace Zhele::Timers::Private
 {
 
-    #define BASETIMER_TEMPLATE_ARGS template<typename _Regs, typename _ClockEnReg, IRQn_Type _IRQNumber>
-    #define BASETIMER_TEMPLATE_QUALIFIER BaseTimer<_Regs, _ClockEnReg, _IRQNumber>
+#define BASETIMER_TEMPLATE_ARGS template<typename _Regs, typename _ClockEnReg, IRQn_Type _IRQNumber, typename _CounterType>
+#define BASETIMER_TEMPLATE_QUALIFIER BaseTimer<_Regs, _ClockEnReg, _IRQNumber, _CounterType>
 
     BASETIMER_TEMPLATE_ARGS
     unsigned BASETIMER_TEMPLATE_QUALIFIER::GetClockFreq()
@@ -140,8 +140,8 @@ namespace Zhele::Timers::Private
         _Regs()->DIER &= ~TIM_DIER_UDE;
     }
 
-    #define GPTIMER_TEMPLATE_ARGS template<typename _Regs, typename _ClockEnReg, IRQn_Type _IRQNumber, template<unsigned> typename _ChPins>
-    #define GPTIMER_TEMPLATE_QUALIFIER GPTimer<_Regs, _ClockEnReg, _IRQNumber, _ChPins>
+#define GPTIMER_TEMPLATE_ARGS template<typename _Regs, typename _ClockEnReg, IRQn_Type _IRQNumber, template<unsigned> typename _ChPins, typename _CounterType>
+#define GPTIMER_TEMPLATE_QUALIFIER GPTimer<_Regs, _ClockEnReg, _IRQNumber, _ChPins, _CounterType>
 
     GPTIMER_TEMPLATE_ARGS
     void GPTIMER_TEMPLATE_QUALIFIER::SlaveMode::EnableSlaveMode(Mode mode)
@@ -234,7 +234,7 @@ namespace Zhele::Timers::Private
 
     GPTIMER_TEMPLATE_ARGS
     template<unsigned _ChannelNumber>
-    GPTIMER_TEMPLATE_QUALIFIER::Base::Counter GPTIMER_TEMPLATE_QUALIFIER::InputCapture<_ChannelNumber>::GetValue()
+    typename GPTIMER_TEMPLATE_QUALIFIER::Base::Counter GPTIMER_TEMPLATE_QUALIFIER::InputCapture<_ChannelNumber>::GetValue()
     {
         return (&_Regs()->CCR1)[_ChannelNumber];
     }
